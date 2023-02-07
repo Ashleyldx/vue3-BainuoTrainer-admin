@@ -1,32 +1,31 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
 
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <div id="app">
-    <button @click="count++">count is:{{count}}</button>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
-</template>
+    <router-link :to="{name:'Login'}">登录</router-link>
+    <router-link :to="{name:'Layout'}">首页</router-link>
+    <router-link :to="{name:'netClassManage'}">网络课程管理</router-link>
+    <router-link :to="{name:'dataOverview'}">数据总览</router-link>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+    <router-view></router-view>
+  </div>
+
+  <div id="app">
+    
+  </div>
+ </template>
+
+<script lang="ts" setup>
+
+</script>
+
+<style lang="scss">
+// *{
+//   padding: 0px;
+//   margin: 0px;
+// }
+
+// html,body,#app{
+//   width: 100%;
+//   height: 100%;
+// }
 </style>
