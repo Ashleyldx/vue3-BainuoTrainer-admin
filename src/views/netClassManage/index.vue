@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import theHeaders from '../../Layout/components/theHeaders.vue';
 import menuBar from '../../Layout/components/menuBar.vue'
+import pageTitle from '../../components/pageTitle.vue'
 import { reactive, ref, toRefs, defineProps, getCurrentInstance, defineExpose  } from 'vue'
 import { FormInstance, FormRules, ElMessage, UploadProps, ElMessageBox } from 'element-plus'
 import { Search, Plus } from '@element-plus/icons-vue'
+import serviceNetClass from "../netClassManage/api";
 const { proxy } = getCurrentInstance() as any
 const text = ref('')
 const textarea = ref('')
@@ -13,37 +15,49 @@ const formDataRef = ref<FormInstance>()
 const input = ref('')
 const dialogNetClass = ref(true)
 const dialogVisible = ref(false)
-const state = reactive({
-  searchForm: {
+const searchForm = reactive({
     courseName: '',
     courseType: '',
-  },
-  tableData: [{
-    courseName: "",
-    courseType: "",
-    videoCover: "",
-    videoFile: "",
-    videoIntroduction: ""
-  }],
-  formData: [{
+})
+
+const state = reactive({
+  formData:{
     courseName: '',
     courseType: '',
     videoCover: '',
     videoFile: '',
     videoIntroduction:''
-  }]
+  },
+  tableData:{
+    currentPage:1, // 当前页面
+    pageSize:20, // 页面数量
+    total:0
+  }
 })
+
+// const formData=reactive({
+//     courseName: '',
+//     courseType: '',
+//     videoCover: '',
+//     videoFile: '',
+//     videoIntroduction:''
+// })
+// const tableData=reactive({
+//   courseName: '',
+//   courseType: '',
+//   videoCover: '',
+//   videoFile: '',
+//   videoIntroduction:'',
+//   currentPage:1, // 当前页面
+//   pageSize:20, // 页面数量
+//   total:0
+// })
 // 点击按钮出现新增弹窗
 const handleAdd = () => {
-  state.tableData.dialogNetClass = true
+  // state.tableData.dialogNetClass = true
 }
 
-// top栏查询
-const onSubmit = () => {
-  console.log('提交!')
-}
-
-// form表单校验
+// 弹出框form表单校验
 const rules = reactive<FormRules>({
   courseName: [
     { required: true, message: '请输入课程名称', trigger: 'blur' },
@@ -75,26 +89,33 @@ const rules = reactive<FormRules>({
   ],
 })
 
+// top栏查询
+const onSubmit = () => {
+  console.log('提交!')
+}
 // table列表初始化
  const tableList=()=>{
-    const data=()=>{
-      {
-        courseName = state.tableData.courseName,
-        courseType = state.tableData.courseType,
-        videoCover = state.tableData.videoCover,
-        videoFile = state.tableData.videoFile,
-        videoIntroduction = state.tableData.videoIntroduction
-      }
-      proxy.$refs.post
+    const data = {
+      currentPage:tableData.currentPage,
+      pageSize:tableData.pageSize,
+      courseName: formData.courseName,
+      courseType: formData.courseType,
+      videoCover: formData.videoCover,
+      videoFile: formData.videoFile,
+      videoIntroduction:formData.videoIntroduction
     }
- }
+   console.log('数据', data)
+      serviceNetClass.getComprehensiveByPage(data).then((res:any)=>{
+        console.log('数据',res)
+      })
+  }
 
 // 表单提交申请
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log('submit!')
+      console.log('提交成功!')
     } else {
       console.log('提交失败!', fields)
     }
@@ -105,6 +126,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.resetFields()
+}
+
+// table列表内容删除
+const handleDelete=()=>{
+  console.log('shanchu')
 }
 
 // 图片和视频上传
@@ -129,7 +155,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 
 <template>
   <div>
-       <div class="common-layout">
+    <div class="common-layout">
         <!--  顶部-->
          <el-container>
            <el-header>
@@ -143,13 +169,14 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
              <!-- 主面板 -->
              <el-main class="mainContainer">
                <el-card>
+<!--                 <pageTitle>111</pageTitle>-->
                  <div class="mainCard">
-                   <el-form :inline="true" :model="state.searchForm" class="DemoForm">
+                   <el-form :inline="true" :model="searchForm" class="DemoForm">
                      <el-form-item label="课程名称">
-                       <el-input v-model.trim="state.searchForm.courseName" placeholder="请输入课程名称" clearable/>
+                       <el-input v-model.trim="searchForm.courseName" placeholder="请输入课程名称" clearable/>
                      </el-form-item>
                      <el-form-item label="课程标签">
-                       <el-select v-model="state.searchForm.courseType" placeholder="请选择课程类型">
+                       <el-select v-model="searchForm.courseType" placeholder="请选择课程类型">
                          <el-option label="课程一" value="shanghai" />
                          <el-option label="课程二" value="beijing" />
                        </el-select>
@@ -161,16 +188,37 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
                        <el-button type="primary" icon="Plus" @click="dialogVisible = true">新增</el-button>
                      </el-form-item>
                    </el-form>
-                   <el-table :data="state.tableData" border >
+<!--                   table列表-->
+                   <el-table :data="tableData" border style="width: 100%">
                      <el-table-column prop="index" label="序号" align="center" width="60" />
-                     <el-table-column prop="courseName" label="课程名称" align="center" width="180" ></el-table-column>
-                     <el-table-column prop="courseType" label="课程类型" align="center" width="180" ></el-table-column>
-                     <el-table-column prop="videoCover" label="视频封面" align="center" width="180" ></el-table-column>
-                     <el-table-column prop="videoIntroduction" label="视频简介" align="center" width="180" ></el-table-column>
-                     <el-table-column prop="videoFile" label="视频文件" align="center" width="180" ></el-table-column>
+                     <el-table-column prop="courseName" label="课程名称" align="center" width="180" >
+                       <template #default='scope'>
+                         <span >{{ scope.row.courseName}}</span>
+                       </template>
+                     </el-table-column>
+                     <el-table-column prop="courseType" label="课程类型" align="center" width="180" >
+                        <template #default="scope">
+                          <span>{{scope.row.courseType}}</span>
+                        </template>
+                     </el-table-column>
+                     <el-table-column prop="videoCover" label="视频封面" align="center" width="180" >
+                       <template #default="scope">
+                         <span>{{scope.row.videoCover}}</span>
+                       </template>
+                     </el-table-column>
+                     <el-table-column prop="videoIntroduction" label="视频简介" align="center" width="180" >
+                       <template #default="scope">
+                         <span>{{scope.row.videoIntroduction}}</span>
+                       </template>
+                     </el-table-column>
+                     <el-table-column prop="videoFile" label="视频文件" align="center" width="180" >
+                       <template #default="scope">
+                         <span>{{scope.row.videoFile}}</span>
+                       </template>
+                     </el-table-column>
                      <el-table-column label="操作" width="180" align="center">
                        <template #default="scope">
-                         <el-button type="primary" plain size="small" @click="handleEdit()">编辑</el-button>
+                         <el-button type="primary" plain size="small" @click="handleAdd()">编辑</el-button>
                          <el-button type="danger" plain size="small" @click="handleDelete()">删除</el-button>
                        </template>
                      </el-table-column>
@@ -180,6 +228,17 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
              </el-main>
            </el-container>
          </el-container>
+          <el-pagination
+            background
+            layout="total, sizes, prev, pager, next, jumper"
+            v-model:current-page="currentPage"
+            v-model:page-size="pageSize"
+
+            small
+            :total="total"
+            @size-change='handleSizeChange'
+            @current-change='handleCurrentChange'/>
+<!--      :page-sizes="tableData.pageSizes"-->
       </div>
 
   <!-- ========弹出层页面=========== -->
@@ -191,15 +250,15 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
       width="50%" >
     <el-form
       ref="formDataRef"
-      :model="state.formData"
+      :model="formData"
       :rules="rules"
       label-width="120px"
       class="demo-formData">
     <el-form-item label="课程名称" prop="courseName">
-      <el-input v-model.trim="state.formData.courseName" />
+      <el-input v-model.trim="formData.courseName" />
     </el-form-item>
     <el-form-item label="课程类型" prop="courseType">
-      <el-checkbox-group v-model="state.formData.courseType">
+      <el-checkbox-group v-model="formData.courseType">
         <el-checkbox label="非重点排污单位" name="非重点排污单位" />
         <el-checkbox label="重点排污大气" name="重点排污大气" />
         <el-checkbox label="重点排污单位-水" name="重点排污单位-水" />
@@ -230,7 +289,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   </el-upload>
     </el-form-item>
     <el-form-item label="视频简介" prop="videoIntroduction">
-      <el-input v-model.trim="state.formData.videoIntroduction" type="textarea" maxlength="300" placeholder="请输入视频简介" show-word-limit clearable/>
+      <el-input v-model.trim="formData.videoIntroduction" type="textarea" maxlength="300" placeholder="请输入视频简介" show-word-limit clearable/>
     </el-form-item>
     <el-row justify="center">
       <el-button type="primary" @click="submitForm(formDataRef)">保存</el-button>
@@ -258,8 +317,8 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     padding: 30px;
     border-radius: 5px;
     height: 80%;
+    }
   }
-}
 }
 .demoForm{
   width:60%;
