@@ -1,14 +1,11 @@
 <template>
-  <div>
-    这是重点排污单位
-  </div>
-  <div>
 
-  </div>
+<!--    这是重点排污单位-->
+    <div></div>
 </template>
 <script lang="ts" setup>
 
-/* 两个便饼图 */
+// import * from
  const option = {
   tooltip: {
     trigger: 'item'

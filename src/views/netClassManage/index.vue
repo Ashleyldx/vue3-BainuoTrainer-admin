@@ -2,9 +2,9 @@
 import theHeaders from '../../Layout/components/theHeaders.vue';
 import menuBar from '../../Layout/components/menuBar.vue'
 import pageTitle from '../../components/pageTitle.vue'
-import { reactive, ref, toRefs, defineProps, getCurrentInstance, defineExpose  } from 'vue'
+import { reactive, ref, toRefs, defineProps, getCurrentInstance, defineExpose, onMounted } from 'vue'
 import { FormInstance, FormRules, ElMessage, UploadProps, ElMessageBox } from 'element-plus'
-import { Search, Plus } from '@element-plus/icons-vue'
+// import { Search, Plus } from '@element-plus/icons-vue'
 import serviceNetClass from "../netClassManage/api";
 const { proxy } = getCurrentInstance() as any
 const text = ref('')
@@ -15,43 +15,38 @@ const formDataRef = ref<FormInstance>()
 const input = ref('')
 const dialogNetClass = ref(true)
 const dialogVisible = ref(false)
-const searchForm = reactive({
+const searchParam = reactive({
     courseName: '',
     courseType: '',
 })
 
 const state = reactive({
-  formData:{
+  tableData:{
     courseName: '',
     courseType: '',
     videoCover: '',
     videoFile: '',
-    videoIntroduction:''
+    videoIntroduction:'',
   },
-  tableData:{
-    currentPage:1, // 当前页面
-    pageSize:20, // 页面数量
-    total:0
-  }
+  currentPage:1, // 当前页面
+  pageSize:20, // 页面数量
+  total:0
 })
 
-// const formData=reactive({
-//     courseName: '',
-//     courseType: '',
-//     videoCover: '',
-//     videoFile: '',
-//     videoIntroduction:''
+const formData = reactive({
+  courseName: '',
+  courseType: '',
+  videoCover: '',
+  videoFile: '',
+  videoIntroduction:''
+//   tableData:{
+//     currentPage:1, // 当前页面
+//     pageSize:20, // 页面数量
+//     total:0
+//   }
 // })
-// const tableData=reactive({
-//   courseName: '',
-//   courseType: '',
-//   videoCover: '',
-//   videoFile: '',
-//   videoIntroduction:'',
-//   currentPage:1, // 当前页面
-//   pageSize:20, // 页面数量
-//   total:0
-// })
+})
+
 // 点击按钮出现新增弹窗
 const handleAdd = () => {
   // state.tableData.dialogNetClass = true
@@ -94,21 +89,25 @@ const onSubmit = () => {
   console.log('提交!')
 }
 // table列表初始化
- const tableList=()=>{
+ const initTableList=()=>{
     const data = {
-      currentPage:tableData.currentPage,
-      pageSize:tableData.pageSize,
-      courseName: formData.courseName,
-      courseType: formData.courseType,
-      videoCover: formData.videoCover,
-      videoFile: formData.videoFile,
-      videoIntroduction:formData.videoIntroduction
+      currentPage:state.currentPage,
+      pageSize:state.pageSize,
+      courseName: state.tableData.courseName,
+      courseType: state.tableData.courseType,
+      videoCover: state.tableData.videoCover,
+      videoFile: state.tableData.videoFile,
+      videoIntroduction:state.tableData.videoIntroduction
     }
    console.log('数据', data)
-      serviceNetClass.getComprehensiveByPage(data).then((res:any)=>{
+      serviceNetClass.getNewByPage(data).then((res:any)=>{
         console.log('数据',res)
       })
   }
+  // ouMounted调用函数
+    onMounted(()=>{
+      initTableList()
+    })
 
 // 表单提交申请
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -171,12 +170,12 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
                <el-card>
 <!--                 <pageTitle>111</pageTitle>-->
                  <div class="mainCard">
-                   <el-form :inline="true" :model="searchForm" class="DemoForm">
+                   <el-form :inline="true" :model="searchParam" class="DemoForm">
                      <el-form-item label="课程名称">
-                       <el-input v-model.trim="searchForm.courseName" placeholder="请输入课程名称" clearable/>
+                       <el-input v-model.trim="searchParam.courseName" placeholder="请输入课程名称" clearable/>
                      </el-form-item>
                      <el-form-item label="课程标签">
-                       <el-select v-model="searchForm.courseType" placeholder="请选择课程类型">
+                       <el-select v-model="searchParam.courseType" placeholder="请选择课程类型">
                          <el-option label="课程一" value="shanghai" />
                          <el-option label="课程二" value="beijing" />
                        </el-select>
@@ -233,7 +232,6 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
             layout="total, sizes, prev, pager, next, jumper"
             v-model:current-page="currentPage"
             v-model:page-size="pageSize"
-
             small
             :total="total"
             @size-change='handleSizeChange'

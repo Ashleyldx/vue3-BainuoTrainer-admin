@@ -7,10 +7,6 @@
         class="el-menu-vertical-demo"
         @open="handleOpen"
         @close="handleClose">
-<!--        <el-menu-item index="1">-->
-<!--          <el-icon><icon-menu /></el-icon>-->
-<!--          <span>登录</span>-->
-<!--        </el-menu-item>-->
         <el-menu-item index="2">
           <el-icon><icon-menu /></el-icon>
           <span>首页</span>
@@ -93,9 +89,9 @@ const menus = reactive([
 ])
 
 const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
+  // console.log(key, keyPath)
 }
 const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
+  // console.log(key, keyPath)
 }
 </script>

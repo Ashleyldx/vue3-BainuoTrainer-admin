@@ -13,6 +13,9 @@ const serviceNetClassApi = {
     // 分页获取网络课程(综合排序)
     getComprehensiveByPage:'/api/onlineclass/onlinecourses/getComprehensiveByPage',
 
+    // 分页获取网络课程(最新发布)
+    getNewByPage:'/api/onlineclass/onlinecourses/getNewByPage',
+
 }
 
 class serviceNetClass {
@@ -64,6 +67,20 @@ class serviceNetClass {
     static getComprehensiveByPage(data: any) {
         return request({
             url: serviceNetClassApi.getComprehensiveByPage,
+            method: 'POST',
+            json: true,
+            data
+        }).then((res) => {
+            if (res.code === 0 || res.code === '0') {
+                return Promise.resolve(res)
+            }
+            return Promise.reject(res)
+        })
+    }
+
+    static getNewByPage(data: any) {
+        return request({
+            url: serviceNetClassApi.getNewByPage,
             method: 'POST',
             json: true,
             data

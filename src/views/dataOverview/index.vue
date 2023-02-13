@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import menuBar from '../../Layout/components/menuBar.vue'
-import TheHeaders from "../../Layout/components/theHeaders.vue";
+import TheHeaders from "../../Layout/components/theHeaders.vue"
+import firmsNum from "./components/firmsNum.vue";
 
 </script>
 <template>
@@ -17,7 +18,20 @@ import TheHeaders from "../../Layout/components/theHeaders.vue";
           </el-aside>
         <!--   主面板     -->
         <el-main>
-        <div class="mainContainer"></div>
+        <div class="mainContainer">
+          <el-row>
+              <el-card class="cardFirst">
+<!--                <firmsNum></firmsNum>-->
+              </el-card>
+              <el-card class="cardSecond">
+                <el-row>
+                  <el-col :span="6">111</el-col>
+                  <el-col :span="6">222</el-col>
+                </el-row>
+
+              </el-card>
+          </el-row>
+        </div>
         </el-main>
       </el-container>
     </el-container>
@@ -32,8 +46,17 @@ import TheHeaders from "../../Layout/components/theHeaders.vue";
   .mainContainer{
     height: 80%;
     width: 100%;
-    background-color: #cdf2f4;
+    //background-color: #cdf2f4;
     border-radius: 5px;
+    .cardFirst{
+      width: 35%;
+      margin: auto 18px;
+      height: 600px;
+    }
+    .cardSecond{
+      width: 55%;
+      height: 600px;
+    }
   }
 }
 
