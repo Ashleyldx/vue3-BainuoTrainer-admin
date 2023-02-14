@@ -14,7 +14,7 @@ const serviceNetClassApi = {
     getComprehensiveByPage:'/api/onlineclass/onlinecourses/getComprehensiveByPage',
 
     // 分页获取网络课程(最新发布)
-    getNewByPage:'/api/onlineclass/onlinecourses/getNewByPage',
+    getNewByPage: '/api/onlineclass/onlinecourses/getNewByPage',
 
 }
 

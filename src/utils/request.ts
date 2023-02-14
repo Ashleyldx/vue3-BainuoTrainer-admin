@@ -20,12 +20,12 @@ service.interceptors.request.use((config)=>{
 service.interceptors.response.use((res) => {
     console.log('2122', res);
 
-//     const code:number = res.data.code
-//     if(code != 200){
-//         return Promise.reject(res.data)
-//     }
-//     return res.data
-// },(error)=>{
-//     console.log(error)
+    const code:number = res.data.code
+    if(code != 200){
+        return Promise.reject(res.data)
+    }
+    return res.data
+},(error)=>{
+    console.log(error)
 })
 export default service

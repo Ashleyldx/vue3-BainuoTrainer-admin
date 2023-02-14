@@ -1,12 +1,8 @@
-<template>
-<!--    这是企业分布数据-->
-  <div ref="myChart" style="width: 100%"></div>
-</template>
 <script lang="ts">
 import {markRaw, onMounted, ref} from 'vue'
 import * as echarts from 'echarts'
 import taskOverView from "../../dataOverview/api";
-export default({
+export default{
   setup(params:any){
     const myCharts = markRaw<any>({}) // 引入markRaw,固定图表
     const charts=ref({})
@@ -45,12 +41,12 @@ export default({
       initEcharts, // 初始化函数需要return出去
     }
   },
-
-
-})
-
-
-
+}
 </script>
+
+<template>
+  <!--    这是企业分布数据-->
+  <div ref="myChart" style="width: 100%"></div>
+</template>
 
 <style lang="scss" scope></style>

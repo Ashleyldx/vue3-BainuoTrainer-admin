@@ -5,7 +5,7 @@ import pageTitle from '../../components/pageTitle.vue'
 import { reactive, ref, toRefs, defineProps, getCurrentInstance, defineExpose, onMounted } from 'vue'
 import { FormInstance, FormRules, ElMessage, UploadProps, ElMessageBox } from 'element-plus'
 // import { Search, Plus } from '@element-plus/icons-vue'
-import serviceNetClass from "../netClassManage/api";
+// import serviceNetClass from "../netClassManage/api";
 const { proxy } = getCurrentInstance() as any
 const text = ref('')
 const textarea = ref('')
@@ -20,17 +20,12 @@ const searchParam = reactive({
     courseType: '',
 })
 
-const state = reactive({
-  tableData:{
+const tableData = reactive({
     courseName: '',
     courseType: '',
     videoCover: '',
     videoFile: '',
     videoIntroduction:'',
-  },
-  currentPage:1, // 当前页面
-  pageSize:20, // 页面数量
-  total:0
 })
 
 const formData = reactive({
@@ -39,18 +34,17 @@ const formData = reactive({
   videoCover: '',
   videoFile: '',
   videoIntroduction:''
-//   tableData:{
-//     currentPage:1, // 当前页面
-//     pageSize:20, // 页面数量
-//     total:0
-//   }
-// })
+})
+
+const searchRequest=reactive({ // 页码数据
+  tableList:[],
+  currentPage:1, // 当前页面
+  pageSize:20, // 页面数量
+  total:0
 })
 
 // 点击按钮出现新增弹窗
-const handleAdd = () => {
-  // state.tableData.dialogNetClass = true
-}
+const handleAdd = () => {}
 
 // 弹出框form表单校验
 const rules = reactive<FormRules>({
@@ -88,25 +82,36 @@ const rules = reactive<FormRules>({
 const onSubmit = () => {
   console.log('提交!')
 }
+
+const indexMethod=(index: number)=>{
+  index = index+searchRequest.currentPage*(searchRequest.pageSize-1)
+  return index+1
+}
 // table列表初始化
  const initTableList=()=>{
     const data = {
-      currentPage:state.currentPage,
-      pageSize:state.pageSize,
-      courseName: state.tableData.courseName,
-      courseType: state.tableData.courseType,
-      videoCover: state.tableData.videoCover,
-      videoFile: state.tableData.videoFile,
-      videoIntroduction:state.tableData.videoIntroduction
+      currentPage:searchRequest.currentPage,
+      pageSize:searchRequest.pageSize,
+      courseName: tableData.courseName,
+      courseType: tableData.courseType,
+      videoCover: tableData.videoCover,
+      videoFile: tableData.videoFile,
+      videoIntroduction:tableData.videoIntroduction
     }
-   console.log('数据', data)
-      serviceNetClass.getNewByPage(data).then((res:any)=>{
-        console.log('数据',res)
-      })
+   console.log('数据111', data)
+      // serviceNetClass.getComprehensiveByPage(data).then((res:any)=>{
+      //   console.log('数据222',res)
+      // })
+   proxy.$http.post('/api/onlineclass/onlinecourses/getComprehensiveByPage', {}, data).then(res =>{
+     console.log('item:>>',res)
+
+   }).catch((err: any)=>{
+     return err
+   })
   }
   // ouMounted调用函数
     onMounted(()=>{
-      initTableList()
+      // initTableList()
     })
 
 // 表单提交申请
@@ -188,8 +193,8 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
                      </el-form-item>
                    </el-form>
 <!--                   table列表-->
-                   <el-table :data="tableData" border style="width: 100%">
-                     <el-table-column prop="index" label="序号" align="center" width="60" />
+                   <el-table :data="tableList" border style="width: 100%">
+                     <el-table-column prop="index" type="index" :index="indexMethod" label="序号" align="center" width="60" />
                      <el-table-column prop="courseName" label="课程名称" align="center" width="180" >
                        <template #default='scope'>
                          <span >{{ scope.row.courseName}}</span>

@@ -1,10 +1,5 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"; // 1、引入创建路由需要的组件
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"; // 1、引入创建路由需要的组件,调用createRouter方法
 import Layout from '../Layout/index.vue'
-// import Login from '../Login/index.vue'
-// import Home from '../views/Home/index.vue'
-// import netClassManage from '../views/netClassManage/index.vue'
-// import dataOverview from '../views/dataOverview/index.vue'
-
 
 // 2、配置系统所有路由页面
 const routes: Array<RouteRecordRaw> = [

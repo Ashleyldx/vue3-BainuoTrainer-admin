@@ -31,11 +31,11 @@ export default defineConfig({
   // },
   server: {
     https: false, //是否开启https
-    port: 30000, // 端口号
+    port: 30030, // 端口号
     host: '0.0.0.0', // 监听所有地址
     open: true, // 服务启动时是否自动打开浏览器
     cors: true, // 允许跨域
-    proxy:{} // 自定义代理规则
+    proxy: "http://localhost:5000" // 自定义代理规则
   },
   build: {
     target: '', // 设置最终构建的浏览器兼容目标

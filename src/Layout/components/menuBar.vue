@@ -30,6 +30,7 @@
 
 <script lang="ts" setup>
 import {reactive, ref} from 'vue'
+import router from "../../router/index";
 import { Document, Menu as IconMenu, Location, Setting} from '@element-plus/icons-vue'
 
 const menus = reactive([

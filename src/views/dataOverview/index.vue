@@ -21,14 +21,15 @@ import firmsNum from "./components/firmsNum.vue";
         <div class="mainContainer">
           <el-row>
               <el-card class="cardFirst">
+                <div class="cardFirstTitle">企业分布</div>
 <!--                <firmsNum></firmsNum>-->
               </el-card>
               <el-card class="cardSecond">
+                <div class="cardFirstTitle">重点排污单位</div>
                 <el-row>
-                  <el-col :span="6">111</el-col>
-                  <el-col :span="6">222</el-col>
+                  <el-col :span="10">监管级别统计</el-col>
+                  <el-col :span="10">监管类型统计</el-col>
                 </el-row>
-
               </el-card>
           </el-row>
         </div>
