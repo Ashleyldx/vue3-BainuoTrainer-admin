@@ -2,8 +2,11 @@
 import menuBar from '../../Layout/components/menuBar.vue'
 import TheHeaders from "../../Layout/components/theHeaders.vue"
 import firmsNum from "./components/firmsNum.vue";
+import pollutionUnit from "./components/pollutionUnit.vue";
+import pollutionUnitSnd from "./components/pollutionUnitSnd.vue";
 
 </script>
+
 <template>
   <div class="common-layout">
     <el-container>
@@ -22,13 +25,18 @@ import firmsNum from "./components/firmsNum.vue";
           <el-row>
               <el-card class="cardFirst">
                 <div class="cardFirstTitle">企业分布</div>
-<!--                <firmsNum></firmsNum>-->
+                <span>单位： 家</span>
+                  <firmsNum class="cardFirstTitle-firmsNum"></firmsNum>
               </el-card>
               <el-card class="cardSecond">
                 <div class="cardFirstTitle">重点排污单位</div>
                 <el-row>
-                  <el-col :span="10">监管级别统计</el-col>
-                  <el-col :span="10">监管类型统计</el-col>
+                  <el-col :span="11">监管级别统计
+                    <pollutionUnit></pollutionUnit>
+                  </el-col>
+                  <el-col :span="11">监管类型统计
+                    <pollutionUnitSnd></pollutionUnitSnd>
+                  </el-col>
                 </el-row>
               </el-card>
           </el-row>
@@ -42,7 +50,6 @@ import firmsNum from "./components/firmsNum.vue";
 .common-layout{
   .el-aside{
     width:18%;
-    //background-color:pink;
   }
   .mainContainer{
     height: 80%;
@@ -54,9 +61,18 @@ import firmsNum from "./components/firmsNum.vue";
       margin: auto 18px;
       height: 600px;
     }
+    .cardFirstTitle-firmsNum{
+      margin: 0 auto;
+      //background-color: #409EFF;
+    }
     .cardSecond{
       width: 55%;
       height: 600px;
+    }
+    .cardFirstTitle{
+      font-size: 25px;
+      padding-left: 0px;
+      margin-bottom: 58px;
     }
   }
 }

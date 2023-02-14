@@ -5,7 +5,7 @@ import pageTitle from '../../components/pageTitle.vue'
 import { reactive, ref, toRefs, defineProps, getCurrentInstance, defineExpose, onMounted } from 'vue'
 import { FormInstance, FormRules, ElMessage, UploadProps, ElMessageBox } from 'element-plus'
 // import { Search, Plus } from '@element-plus/icons-vue'
-// import serviceNetClass from "../netClassManage/api";
+import serviceNetClass from "../netClassManage/api";
 const { proxy } = getCurrentInstance() as any
 const text = ref('')
 const textarea = ref('')
@@ -29,6 +29,7 @@ const tableData = reactive({
 })
 
 const formData = reactive({
+  playTimes:'',
   courseName: '',
   courseType: '',
   videoCover: '',
@@ -38,6 +39,7 @@ const formData = reactive({
 
 const searchRequest=reactive({ // 页码数据
   tableList:[],
+  searchCount:true,
   currentPage:1, // 当前页面
   pageSize:20, // 页面数量
   total:0
@@ -99,19 +101,19 @@ const indexMethod=(index: number)=>{
       videoIntroduction:tableData.videoIntroduction
     }
    console.log('数据111', data)
-      // serviceNetClass.getComprehensiveByPage(data).then((res:any)=>{
-      //   console.log('数据222',res)
-      // })
-   proxy.$http.post('/api/onlineclass/onlinecourses/getComprehensiveByPage', {}, data).then(res =>{
-     console.log('item:>>',res)
-
-   }).catch((err: any)=>{
-     return err
-   })
+      serviceNetClass.getComprehensiveByPage(data).then((res:any)=>{
+        console.log('数据222',res)
+      })
+   // proxy.$http.post('/api/onlineclass/onlinecourses/getComprehensiveByPage', {}, data).then(res =>{
+   //   console.log('item:>>',res)
+   //
+   // }).catch((err: any)=>{
+   //   return err
+   // })
   }
   // ouMounted调用函数
     onMounted(()=>{
-      // initTableList()
+      initTableList()
     })
 
 // 表单提交申请
