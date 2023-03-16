@@ -1,0 +1,23 @@
+<template>
+  <div>
+    <div class="pageTitle">
+    <span>好差评</span>
+    <span>12345</span>
+  </div>
+    <div>
+      工单总数
+      已完成
+      未完成
+      工单处理及时率
+    </div>
+    <div>
+      工单部门热榜
+    </div>
+    <div>
+      工单事件热榜
+    </div>
+    <div>
+      投诉率
+    </div>
+  </div>
+</template>

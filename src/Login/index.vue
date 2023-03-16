@@ -31,15 +31,16 @@
     </el-input>
     </el-form-item>
     <!-- 验证码，验证码的字段随便写的 -->
-    <el-form-item prop="verCode" >
+    <el-form-item prop="code" >
       <el-input 
-      v-model.trim="formData.verCode"
+      v-model.trim="formData.code"
       placeholder="请输入验证码" 
       size="large"
       clearable>
     </el-input>
     <!--   点击事件-->
-    <img src="" @click="changeCode" alt=""/>
+    <img src="" 
+    @click="changeCode" alt=""/>
     </el-form-item>
     <p>忘记密码</p>
     <el-form-item>
@@ -63,7 +64,8 @@ import { get32_bitRandom } from '@/utils/index'
   const formData = reactive({
     phone: '',
     password: '',
-    verCode:''
+    img: '',
+    code:''
   })
 
   const rules = reactive({
@@ -74,12 +76,12 @@ import { get32_bitRandom } from '@/utils/index'
         { required: true, message: '请输入密码', trigger: 'blur' },
         { min: 3, max: 10, message: '密码的长度在3-10之间', trigger: 'blur'},
       ],
-      verCode: [
-        { required: true, message: '请输入验证码', trigger: 'blur' },
-        { pattern: /^[a-z,0-9]{4}$/, message: '验证码为4位,且只能为小写字母和数字', trigger: 'blur' }],
+      code: [
+      { required: true, message: '请输入验证码', trigger: 'blur' },
+          { pattern: /^[a-z,0-9]{4}$/, message: '验证码为4位,且只能为小写字母和数字', trigger: 'blur' }],
       })
     const changeCode=()=>{  // 点击更新验证码
-
+      
     }
   
   // 提交登录内容
@@ -87,6 +89,7 @@ import { get32_bitRandom } from '@/utils/index'
     if (!formEl) return
     formEl.validate((valid) => {
       if (valid) {
+      
         console.log('提交成功!')
       } else {
         console.log('提交失败!')

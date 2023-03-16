@@ -25,6 +25,13 @@ const routes: Array<RouteRecordRaw> = [
     meta:{title:"",icon:""}
   },
   {
+    path: "/otherPages",
+    name:'otherPages',
+    component: () => import('../views/otherPages/index.vue'),
+    // component: dataOverview,
+    meta:{title:"",icon:""}
+  },
+  {
     path: "/Home",
     name:'Home',
     component: () => import('../views/Home/index.vue'),

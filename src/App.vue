@@ -1,10 +1,10 @@
 
 <template>
   <div>
-    <router-link :to="{name:'Login'}">登录</router-link>
-    <router-link :to="{name:'Home'}">首页</router-link>
-    <router-link :to="{name:'netClassManage'}">网络课程管理</router-link>
-    <router-link :to="{name:'dataOverview'}">数据总览</router-link>
+<!--    <router-link :to="{name:'Login'}">登录</router-link>-->
+<!--    <router-link :to="{name:'Home'}">首页</router-link>-->
+<!--    <router-link :to="{name:'netClassManage'}">网络课程管理</router-link>-->
+<!--    <router-link :to="{name:'dataOverview'}">数据总览</router-link>-->
 
     <router-view></router-view>
       <!--    vue中routerlink是实现路由之间的跳转
